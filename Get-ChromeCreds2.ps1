@@ -1,5 +1,5 @@
 ##
-#  Name:    dump-chrome-creds.ps1
+#  Name:    Get-ChromeCreds2.ps1
 #  Author:  Kerry Milan
 #  Date:    2017/04/28
 #  Version: 1.0
